@@ -34,7 +34,8 @@
 			"locale": "cpp",
 			"ratio": "cpp",
 			"tuple": "cpp",
-			"vector": "cpp"
+			"vector": "cpp",
+			"*.ipp": "cpp"
 		}
 	},
 	"extensions": {

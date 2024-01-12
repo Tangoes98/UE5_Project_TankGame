@@ -38,6 +38,20 @@ void ABasePawn::RotateTurrent(FVector LookAtTarget)
 			15.f));
 }
 
+void ABasePawn::FireProjectile()
+{
+	FVector ProjectileSpawnPointLocation = ProjectileSpawnPoint->GetComponentLocation();
+
+	DrawDebugSphere(
+		GetWorld(),
+		ProjectileSpawnPointLocation,
+		25.f,
+		12,
+		FColor::Green,
+		false,
+		3.f);
+}
+
 // // Called when the game starts or when spawned
 // void ABasePawn::BeginPlay()
 // {
