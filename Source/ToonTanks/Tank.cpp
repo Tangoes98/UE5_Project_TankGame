@@ -5,14 +5,15 @@
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
 ATank::ATank()
 {
-    _springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
-    _springArm->SetupAttachment(RootComponent);
+    m_springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
+    m_springArm->SetupAttachment(RootComponent);
 
     _camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-    _camera->SetupAttachment(_springArm);
+    _camera->SetupAttachment(m_springArm);
 }
 
 void ATank::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
@@ -23,18 +24,48 @@ void ATank::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
     PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ATank::Turn);
 }
 
+void ATank::BeginPlay()
+{
+    Super::BeginPlay();
+
+    m_playerControllerRef = Cast<APlayerController>(GetController());
+}
+
+void ATank::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    if (!m_playerControllerRef)
+        return;
+
+    FHitResult hitResult;
+    m_playerControllerRef->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, hitResult);
+    RotateTurrent(hitResult.ImpactPoint);
+
+    // DrawDebugSphere(
+    //     GetWorld(),
+    //     hitResult.ImpactPoint,
+    //     25.f,
+    //     12,
+    //     FColor::Red,
+    //     false,
+    //     -1.f);
+}
+
+////////////////////////////////////////////////////////////////
+
 void ATank::Move(float value)
 {
     // UE_LOG(LogTemp, Warning, TEXT("Value: %f"), value);
     // FVector deltaLocation = FVector::ZeroVector;
     FVector deltaLocation = FVector::Zero();
-    deltaLocation.X = value * _speed * UGameplayStatics::GetWorldDeltaSeconds(this);
+    deltaLocation.X = value * m_speed * UGameplayStatics::GetWorldDeltaSeconds(this);
     AddActorLocalOffset(deltaLocation, true);
 }
 
 void ATank::Turn(float value)
 {
     FRotator deltaRotation = FRotator::ZeroRotator;
-    deltaRotation.Yaw = value * _turnRate * UGameplayStatics::GetWorldDeltaSeconds(this);
+    deltaRotation.Yaw = value * m_turnRate * UGameplayStatics::GetWorldDeltaSeconds(this);
     AddActorLocalRotation(deltaRotation, true);
 }

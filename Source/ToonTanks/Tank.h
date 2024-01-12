@@ -6,7 +6,6 @@
 #include "BasePawn.h"
 #include "Tank.generated.h"
 
-
 /**
  *
  */
@@ -20,20 +19,27 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
+	virtual void Tick(float DeltaTime) override;
+
+protected:
+	virtual void BeginPlay() override;
+
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	class USpringArmComponent *_springArm;
+	class USpringArmComponent *m_springArm;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UCameraComponent *_camera;
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float _speed = 200.f;
+	float m_speed = 200.f;
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float _turnRate = 45.f;
+	float m_turnRate = 45.f;
 
 	void Move(float value);
 
 	void Turn(float value);
+
+	APlayerController *m_playerControllerRef;
 };
