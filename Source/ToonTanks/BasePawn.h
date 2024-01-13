@@ -12,17 +12,9 @@ class TOONTANKS_API ABasePawn : public APawn
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
 	ABasePawn();
 
-	// int32 VisibleAnywhereInt = 12;
-
-	// protected:
-	// 	// Called when the game starts or when spawned
-	// 	virtual void BeginPlay() override;
-
 protected:
-
 	void RotateTurrent(FVector LookAtTarget);
 	void FireProjectile();
 
@@ -39,10 +31,6 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = true))
 	USceneComponent *ProjectileSpawnPoint;
 
-public:
-	// Called every frame
-	// virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	// virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	TSubclassOf<class AProjectile> m_ProjectileClass;
 };

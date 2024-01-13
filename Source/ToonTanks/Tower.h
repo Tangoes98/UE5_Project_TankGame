@@ -28,4 +28,10 @@ private:
 
 	void DrawSphere(float &fireRange);
 
+	bool IsPlayerInFireRange();
+
+	FTimerHandle m_FireRateTimerHandle;
+	float m_FireRate = 2.f;
+	void CheckFireCondition();
+
 };

@@ -35,7 +35,8 @@
 			"ratio": "cpp",
 			"tuple": "cpp",
 			"vector": "cpp",
-			"*.ipp": "cpp"
+			"*.ipp": "cpp",
+			"*.rh": "cpp"
 		}
 	},
 	"extensions": {
