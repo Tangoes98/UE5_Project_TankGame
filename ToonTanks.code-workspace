@@ -37,7 +37,8 @@
 			"vector": "cpp",
 			"*.ipp": "cpp",
 			"*.rh": "cpp"
-		}
+		},
+		"UEIntellisenseFixes.fixes.warnIfMissingSourceInCC": false
 	},
 	"extensions": {
 		"recommendations": [

@@ -56,3 +56,10 @@ bool ATower::IsPlayerInFireRange()
 
     return true;
 }
+
+void ATower::HandleDestruction()
+{
+    Super::HandleDestruction();
+    Destroy();
+	
+}

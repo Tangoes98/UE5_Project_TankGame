@@ -14,6 +14,8 @@ class TOONTANKS_API ABasePawn : public APawn
 public:
 	ABasePawn();
 
+	void HandleDestruction();
+
 protected:
 	void RotateTurrent(FVector LookAtTarget);
 	void FireProjectile();
