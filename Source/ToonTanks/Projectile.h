@@ -30,9 +30,24 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Projectile")
 	class UProjectileMovementComponent *m_ProjectileMovementComponent;
 
+	UPROPERTY(VisibleAnywhere, Category = "Projectile")
+	class UParticleSystemComponent *m_TrailParticles;
+
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent *HitComp, AActor *OtherActor, UPrimitiveComponent *OtherComp, FVector NormalImpulse, const FHitResult &Hit);
 
 	UPROPERTY(EditAnywhere)
 	float m_Damage = 50.f;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	class UParticleSystem *m_HitParticles;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	class USoundBase *m_LaunchSound;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	class USoundBase *m_HitSound;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	TSubclassOf< class UCameraShakeBase> m_HitCameraShakeClass;
 };

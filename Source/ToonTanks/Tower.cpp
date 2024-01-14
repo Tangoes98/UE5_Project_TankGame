@@ -24,12 +24,12 @@ void ATower::BeginPlay()
     GetWorldTimerManager().SetTimer(m_FireRateTimerHandle, this, &ATower::CheckFireCondition, m_FireRate, true);
 }
 
-void ATower::DrawSphere(float &fireRange)
+void ATower::DrawSphere(float &_fireRange)
 {
     DrawDebugSphere(
         GetWorld(),
         GetActorLocation(),
-        fireRange,
+        _fireRange,
         12,
         FColor::Red,
         false,

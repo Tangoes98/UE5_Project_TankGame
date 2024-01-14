@@ -4,6 +4,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GameFramework/DamageType.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -17,6 +18,9 @@ AProjectile::AProjectile()
 	m_ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Mvoement Component"));
 	m_ProjectileMovementComponent->MaxSpeed = 1300.f;
 	m_ProjectileMovementComponent->InitialSpeed = 1300.f;
+
+	m_TrailParticles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Smoke Trail "));
+	m_TrailParticles->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -25,6 +29,10 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	m_ProjectileMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+
+	if (!m_LaunchSound)
+		return;
+	UGameplayStatics::PlaySoundAtLocation(this, m_LaunchSound, GetActorLocation());
 }
 
 // Called every frame
@@ -45,18 +53,30 @@ void AProjectile::OnHit(
 	auto _MyOwner = GetOwner();
 
 	if (_MyOwner == nullptr)
+	{
+		Destroy();
 		return;
+	}
 
 	auto _MyOwnerInstigator = _MyOwner->GetInstigatorController();
 
 	auto _DamageTypeClass = UDamageType::StaticClass();
 
 	if (!OtherActor)
+	{
+		Destroy();
 		return;
+	}
 	if (OtherActor == this)
+	{
+		Destroy();
 		return;
+	}
 	if (OtherActor == _MyOwner)
+	{
+		Destroy();
 		return;
+	}
 
 	UGameplayStatics::ApplyDamage(
 		OtherActor,
@@ -64,5 +84,29 @@ void AProjectile::OnHit(
 		_MyOwnerInstigator,
 		this,
 		_DamageTypeClass);
+
+	if (!m_HitParticles)
+	{
+		Destroy();
+		return;
+	}
+	UGameplayStatics::SpawnEmitterAtLocation(this, m_HitParticles, GetActorLocation(), GetActorRotation());
+
+	if (!m_HitSound)
+	{
+		Destroy();
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(this, m_LaunchSound, GetActorLocation());
+
+	if (!m_HitCameraShakeClass)
+	{
+		Destroy();
+		return;
+	}
+	GetWorld()-> GetFirstPlayerController()->ClientStartCameraShake(m_HitCameraShakeClass);
+	
+
 	Destroy();
 }

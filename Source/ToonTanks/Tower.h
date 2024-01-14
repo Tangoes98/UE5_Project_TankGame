@@ -28,7 +28,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	float m_FireRange = 300.f;
 
-	void DrawSphere(float &fireRange);
+	void DrawSphere(float &_fireRange);
 
 	bool IsPlayerInFireRange();
 
